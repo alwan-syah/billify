@@ -22,7 +22,7 @@ class BillTypeController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<div class="d-flex align-items-center justify-content-center">
-							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>
+							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal"><span class="bi bi-trash-fill"></span></a>
 						</div>
 					';
 				})

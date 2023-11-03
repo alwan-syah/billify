@@ -18,17 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('home');
-    Route::post('/', [AuthController::class, 'login'])->name('login');
+	Route::get('/', [AuthController::class, 'index'])->name('home');
+	Route::post('/', [AuthController::class, 'login'])->name('login');
 });
 
 Route::middleware('auth')->prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resources([
-        'pembayaran' => BillsController::class,
-        'jenis-pembayaran' => BillTypeController::class
-    ]);
+	Route::resources([
+		'pembayaran' => BillsController::class,
+		'jenis-pembayaran' => BillTypeController::class
+	]);
 
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+	Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

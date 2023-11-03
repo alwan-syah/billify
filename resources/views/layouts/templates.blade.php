@@ -1,38 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Billify | Dashboard</title>
+
+		<link rel="shortcut icon" href="./favicon.svg" type="image/x-icon" />
+
 		@include('includes.head')
+
 		@yield('page_css')
 	</head>
 
-	<body class="hold-transition sidebar-mini layout-fixed">
-		<!--wrapper -->
-		<div class="wrapper">
-			<!-- Preloader -->
-			{{-- <div
-				class="preloader flex-column justify-content-center align-items-center"
-			>
-				<img
-					class="animation__shake"
-					src="{{ asset('images/AdminLTELogo.png') }}"
-					alt="AdminLTELogo"
-					height="60"
-					width="60"
-				/>
-			</div> --}}
-
-			@include('includes.header')
-
-			<!-- page-wrapper -->
-			<div class="content-wrapper">
-
-				@yield('content')
-
+	<body>
+		<script src="{{ asset('js/initTheme.js') }}"></script>
+		<div id="app">
+			<div id="sidebar">
+				@include('includes.header')
 			</div>
-			<!-- /#page-wrapper -->
+			<div id="main">
+				@yield('content')
+			</div>
 		</div>
-		<!-- /#wrapper -->
+
+
 		@include('includes.scripts')
+		
 
 		@yield('page_scripts')
 	</body>

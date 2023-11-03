@@ -1,126 +1,230 @@
 @extends('layouts.templates')
 
+@section('page_css')
+	<link rel="stylesheet" href="{{ asset('plugin/flatpickr/flatpickr.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('plugin/filepond/filepond.css') }}">
+	<link rel="stylesheet" href="{{ asset('plugin/filepond-image-preview/filepond-plugin-image-preview.min.css') }}">
+@endsection
+
 @section('content')
-<section class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Buat Data Pembayaran</h1>
+<header class="mb-3">
+	<a href="#" class="burger-btn d-block d-xl-none">
+		<i class="bi bi-justify fs-3"></i>
+	</a>
+</header>
+
+<div class="page-heading">
+	<div class="page-title">
+		<div class="row">
+			<div class="col-12 col-md-6 order-md-1 order-last">
+				<h3>Buat Data Pembayaran</h3>
+				<p class="text-subtitle text-muted">Isi form di bawah ini.</p>
 			</div>
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Buat Data Pembayaran</li>
-				</ol>
+			<div class="col-12 col-md-6 order-md-2 order-first">
+				<nav
+					aria-label="breadcrumb"
+					class="breadcrumb-header float-start float-lg-end"
+				>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ route('dashboard') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							Buat Data Pembayaran
+						</li>
+					</ol>
+				</nav>
 			</div>
 		</div>
 	</div>
-</section>
 
-<section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
+	<!-- // Basic multiple Column Form section start -->
+	<section id="multiple-column-form">
+		<div class="row match-height">
+			<div class="col-12">
 				<div class="card">
-					<form action="{{ route('pembayaran.store') }}" enctype="multipart/form-data" method="POST" id="createPost">
-						@csrf
+					<div class="card-content">
 						<div class="card-body">
-							<div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-								<label class="form-label" for="description">Deskripsi*</label>
-								<input type="text" class="form-control" name="description" placeholder="Habis bayar apa.." />
-								@if ($errors->has('description'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('description') }}</p>
-									</span>
-								@endif
-							</div>
-							<div class="form-group">
-								<label>Jenis Pembayaran*</label>
-								<select class="form-control" style="width: 100%;" name="type_id">
-									@foreach ($billType as $type)
-										<option value="{{ $type->id }}">{{ $type->name }}</option>
-									@endforeach
-								</select>
-							</div>
-							<div class="form-group{{ $errors->has('total_paid') ? ' has-error' : '' }}">
-								<label class="form-label" for="total_paid">Jumlah Bayar*</label>
-								<input
-									name="total_paid"
-									class="form-control"
-									type="number"
-									placeholder="Total pembayarannya berapa.."/>
-								@if ($errors->has('total_paid'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('total_paid') }}</p>
-									</span>
-								@endif
-							</div>
-							<div class="form-group{{ $errors->has('paid_date') ? ' has-error' : '' }}">
-								<label class="form-label" for="paid_date">Tanggal Bayar*</label>
-								<input name="paid_date" class="form-control" type="date" />
-								@if ($errors->has('paid_date'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('paid_date') }}</p>
-									</span>
-								@endif
-							</div>
-
-							<div class="form-group {{ $errors->has('image') ? ' has-error ':''}}">
-								<label class="form-label" for="feature_image">Bukti Bayar</label>
-								<div class="col-sm-6">
-									<div class="form-group clearfix">
-										<div class="custom-control custom-radio d-inline">
-											<input type="radio" id="imgLocal" name="r1" class="custom-control-input" value="Local" checked>
-											<label for="imgLocal" class="custom-control-label">
-												Penyimpanan Lokal
-											</label>
+							<form class="form" action="{{ route('pembayaran.store') }}" enctype="multipart/form-data" method="POST">
+								@csrf
+								<div class="row">
+									<div class="col-md-6 col-12">
+										<div class="form-group">
+											<label for="description-column">Deskripsi*</label>
+											<input
+												type="text"
+												id="description-column"
+												class="form-control"
+												placeholder="Abis bayar apa ..."
+												name="description"
+											/>
+											@if ($errors->has('description'))
+												<span class="help-block text-danger">
+													<p>{{ $errors->first('description') }}</p>
+												</span>
+											@endif
 										</div>
-										<div class="custom-control custom-radio d-inline ml-2">
-											<input type="radio" id="imgUrl" name="r1" class="custom-control-input" value="Url">
-											<label for="imgUrl" class="custom-control-label">
-												Image Link URL
-											</label>
-										</div>
-										
 									</div>
-								</div>
-								<div class="input-group image-form" id="showLocal">
-									<div class="custom-file">
-										<input class="form-control custom-file-input" type="file" name="image" id="image">
-										<label
-											class="custom-file-label"
-											id="file-label"
-											>Choose file</label
+									<div class="col-md-6 col-12">
+										<div class="form-group">
+											<label for="type-column">
+												Jenis Pembayaran*
+											</label>
+											<fieldset class="form-group">
+												<select class="form-select" name="type_id">
+													@foreach ($billType as $type)
+														<option value="{{ $type->id }}">{{ $type->name }}</option>
+													@endforeach
+												</select>
+											</fieldset>
+										</div>
+									</div>
+									<div class="col-md-6 col-12">
+										<div class="form-group">
+											<label for="total-column">Jumlah Bayar*</label>
+											<input
+												type="number"
+												id="total-column"
+												class="form-control"
+												placeholder="Total bayarnya berapa ..."
+												name="total_paid"
+											/>
+											@if ($errors->has('total_paid'))
+												<span class="help-block text-danger">
+													<p>{{ $errors->first('total_paid') }}</p>
+												</span>
+											@endif
+										</div>
+									</div>
+									<div class="col-md-6 col-12">
+										<div class="form-group">
+											<label for="date-floating">
+												Tanggal Bayar*
+											</label>
+											<input
+												type="date"
+												class="form-control mb-3 flatpickr-no-config"
+												name="paid_date"
+												placeholder="Pilih tanggal ..."
+											/>
+											@if ($errors->has('paid_date'))
+												<span class="help-block text-danger">
+													<p>{{ $errors->first('paid_date') }}</p>
+												</span>
+											@endif
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="form-group">
+											<label for="company-column">Bukti Bayar</label>
+
+											<div class="form-group clearfix mt-2">
+												<div class="form-check">
+													<input
+														class="form-check-input"
+														type="radio"
+														name="imageUpload"
+														id="localUpload"
+														value="Local"
+														checked
+													/>
+													<label
+														class="form-check-label"
+														for="localUpload"
+													>
+														Penyimpanan Lokal
+													</label>
+												</div>
+												<div class="form-check">
+													<input
+														class="form-check-input"
+														type="radio"
+														name="imageUpload"
+														id="fromUrl"
+														value="Url"
+													/>
+													<label class="form-check-label" for="fromUrl">
+														Link URL
+													</label>
+												</div>
+											</div>
+
+											<!-- local upload -->
+											<div class="image-form" id="showLocal">
+												<input
+													type="file"
+													class="image-preview-filepond"
+													name="image"
+												/>
+											</div>
+
+											<!-- from URL -->
+											<div class="image-form" id="showUrl">
+												<input
+													type="url"
+													class="form-control"
+													placeholder="Salin link URL disini ..."
+													id="imageUrl"
+													name="image_url"
+												/>
+											</div>
+
+											<img id="preview_image" class="w-50 mt-2"/>
+										</div>
+									</div>
+									<div class="col-12 d-flex justify-content-center">
+										<button
+											type="submit"
+											class="btn btn-primary me-1 mb-1 btn-block"
 										>
+											Submit
+										</button>
 									</div>
 								</div>
-								<div class="input-group image-form" id="showUrl">
-									<div class="custom-file">
-										<input class="form-control" type="text" name="image_url" id="imageUrl" placeholder="Salin URL gambar disini">
-									</div>
-								</div>
-								<img id="preview_image" class="inputImgPreview w-25 mt-2" src="{{ isset($bill) ? $bill->image : '' }}" />
-
-								@if ($errors->has('image'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('image') }}</p>
-									</span>
-								@endif
-							</div>
-						</div>						
-						<div class="card-footer">
-							<input type="submit" class="btn btn-block btn-primary" value="Save"/>
+							</form>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</div>
 @endsection
 
 @section('page_scripts')
+	<script src="{{ asset('js/jquery.min.js') }}"></script>
+	<script src="{{ asset('plugin/flatpickr/flatpickr.min.js') }}"></script>
+	<script src="{{ asset('plugin/filepond-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+	<script src="{{ asset('plugin/filepond/filepond.js') }}"></script>
+
 	<script>
+		// date picker
+		flatpickr(".flatpickr-no-config", {
+			// enableTime: true,
+			dateFormat: "Y-m-d",
+		});
+
+		// image upload
+		FilePond.registerPlugin(FilePondPluginImagePreview);
+
+		FilePond.create(document.querySelector(".image-preview-filepond"), {
+			credits: null,
+			allowImagePreview: true,
+			allowImageFilter: false,
+			allowImageExifOrientation: false,
+			allowImageCrop: false,
+			acceptedFileTypes: ["image/png", "image/jpg", "image/jpeg"],
+			fileValidateTypeDetectType: (source, type) =>
+				new Promise((resolve, reject) => {
+					// Do custom type detection here and return with promise
+					resolve(type);
+				}),
+			storeAsFile: true,
+		});
+	</script>
+
+	<script>
+		// show image form based on radio input
    	$(document).ready(function () {
 			$("div.image-form").hide();
 
@@ -137,6 +241,7 @@
 			});
 		});
 
+		// show image preview from url
 		$(document).ready(function() {
 			$('#imageUrl').on('input', function() {
 				var imageUrl = $(this).val();
@@ -151,28 +256,6 @@
 			});
     });
 
-	</script>
-
-
-	<script type="text/javascript">
-		document.getElementById('image').addEventListener('change', function(e) {
-			var fileName = e.target.files[0].name;
-			document.getElementById('file-label').textContent = fileName;
-		});
-
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-				var targetPreview = 'preview_'+$(input).attr('id');
-				reader.onload = function(e) {
-					$('#'+targetPreview).attr('src', e.target.result).show();
-				}
-				reader.readAsDataURL(input.files[0]);
-			}
-		}
-		$("#image").change(function() {
-			readURL(this);
-		});
 	</script>
 @endsection
 

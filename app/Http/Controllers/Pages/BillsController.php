@@ -25,8 +25,8 @@ class BillsController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<div class="d-flex align-items-center">
-							<a href="' . route('pembayaran.edit', $id) . '" class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>
-							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>
+							<a href="' . route('pembayaran.edit', $id) . '" class="btn btn-primary btn-sm"><span class="bi bi-pencil-square"></span></a>
+							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal"><span class="bi bi-trash-fill"></span></a>
 						</div>
 					';
 				})
@@ -46,14 +46,14 @@ class BillsController extends Controller
 						return '
 							<img src="' . $model->image . '" style="max-height:150px;">
 							<a class="ml-2" href="' . $model->image . '" target="_blank">
-								<i class="fa-solid fa-eye text-warning" title="Lihat gambar"></i>
+								<i class="bi bi-eye-fill text-warning fs-5" title="Lihat gambar"></i>
 							</a>
 						';
 					} else {
 						return '
 							<img src="' . asset('uploads/' . $model->image) . '" style="max-height:150px;">
 							<a class="ml-2" href="' . asset('uploads/' . $model->image) . '" target="_blank">
-								<i class="fa-solid fa-eye text-warning" title="Lihat gambar"></i>
+								<i class="bi bi-eye-fill text-warning fs-5" title="Lihat gambar"></i>
 							</a>
 						';
 					}
@@ -143,7 +143,7 @@ class BillsController extends Controller
 		$request->validate(
 			[
 				'description' => 'required|string',
-				'total_paid' => 'required|integer|digits_between:4,7',
+				'total_paid' => 'required|integer',
 				'image' => 'sometimes|nullable|mimes:png,jpg,jpeg|max:350',
 				'image_url' => 'sometimes|nullable|url',
 				'paid_date' => 'required|date'
@@ -162,6 +162,12 @@ class BillsController extends Controller
 		$data['slug'] = Str::slug($request->description);
 
 		if ($request->hasFile('image')) {
+			$oldImage = public_path('uploads/' . $bill->image);
+
+			if (file_exists($oldImage)) {
+				unlink($oldImage);
+			}
+
 			$data['image'] = $request->file('image')->store('images/bukti-bayar', 'public');
 		} elseif ($request->filled('image_url')) {
 			$data['image'] = $request->input('image_url');
@@ -186,7 +192,6 @@ class BillsController extends Controller
 				unlink($imagePath);
 			}
 		}
-
 
 		$bill->delete();
 

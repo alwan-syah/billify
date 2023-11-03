@@ -1,80 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Billify | Log in</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Billify | Login</title>
 
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
-		/>
-		<link rel="stylesheet" href="{{ asset('css/fontawesome-free/css/all.min.css') }}" />
-		<link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}" />
+		<link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
+
+		<link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+		<link rel="stylesheet" href="{{ asset('css/app-dark.css') }}" />
+		<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
 	</head>
-	<body class="hold-transition login-page">
-		<div class="login-box">
-			<div class="card card-outline card-primary">
-				<div class="card-header text-center">
-					<a href="/" class="h1 ml-4"><b>Billify</b> Login</a>
+
+	<body>
+		<script src="{{ asset('js/initTheme.js') }}"></script>
+		<div id="auth">
+			<div class="row h-100">
+				<div class="col-lg-5 col-12">
+					<div id="auth-left">
+						<div class="auth-logo">
+							<a href="#">
+								<h1 class="auth-title">Billify</h1>
+							</a>
+						</div>
+						<h1>Log in.</h1>
+						<p class="auth-subtitle mb-5">Log in with admin credential.</p>
+						@include('includes.alerts')
+						<form action="{{ route('login') }}" method="POST">
+							@csrf
+							<div class="form-group position-relative has-icon-left mb-4">
+								<input
+									type="email"
+									class="form-control form-control-xl"
+									placeholder="Email"
+									name="email"
+									autofocus
+								/>
+								<div class="form-control-icon">
+									<i class="bi bi-envelope"></i>
+								</div>
+								@if ($errors->has('email'))
+									<span class="help-block">
+										<p class="text-danger">{{ $errors->first('email') }}</p>
+									</span>
+								@endif
+							</div>
+							<div class="form-group position-relative has-icon-left mb-4">
+								<input
+									type="password"
+									class="form-control form-control-xl"
+									placeholder="Password"
+									name="password"
+								/>
+								<div class="form-control-icon">
+									<i class="bi bi-shield-lock"></i>
+								</div>
+
+								@if ($errors->has('password'))
+									<span class="help-block">
+										<p class="text-danger">{{ $errors->first('password') }}</p>
+									</span>
+								@endif
+							</div>
+							<button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="submit">
+								Log in
+							</button>
+						</form>
+					</div>
 				</div>
-				<div class="card-body">
-					<p class="login-box-msg">Sign in to start your session</p>
-					@include('includes.alerts')
-					<form id="login_form" action="/" method="POST">
-						@csrf
-						<div class="input-group mb-3 form-group">
-							<input
-								type="email"
-								name="email"
-								class="form-control"
-								placeholder="Email"
-								autofocus
-							/>
-							<div class="input-group-append">
-								<div class="input-group-text">
-									<span class="fas fa-envelope"></span>
-								</div>
-							</div>
-						</div>
-						@if ($errors->has('email'))
-							<span class="help-block">
-								<p class="text-danger">{{ $errors->first('email') }}</p>
-							</span>
-						@endif
-						<div class="input-group mb-3 form-group">
-							<input
-								type="password"
-								class="form-control"
-								placeholder="Password"
-								name="password"
-							/>
-							<div class="input-group-append">
-								<div class="input-group-text">
-									<span class="fas fa-lock"></span>
-								</div>
-							</div>
-							
-						</div>
-						@if ($errors->has('password'))
-							<span class="help-block">
-								<p class="text-danger">{{ $errors->first('password') }}</p>
-							</span>
-						@endif
-						<div class="row">
-							<!-- /.col -->
-							<div class="col-12">
-								<input type="submit" class="btn btn-primary btn-block"/>
-							</div>
-							<!-- /.col -->
-						</div>
-					</form>
+				<div class="col-lg-7 d-none d-lg-block">
+					<div id="auth-right"></div>
 				</div>
 			</div>
 		</div>
-
-		<script src="{{ asset('js/jquery.min.js') }}"></script>
-		<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-		<script src="{{ asset('js/adminlte.min.js') }}"></script>
 	</body>
 </html>
